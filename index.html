@@ -8,200 +8,44 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
 
 *{margin:0;padding:0;box-sizing:border-box;}
-
-body{
-  background:#000;
-  color:#00ff41;
-  font-family:'Share Tech Mono',monospace;
-  min-height:100vh;
-  overflow-x:hidden;
-}
-
-#matrix-bg{
-  position:fixed;top:0;left:0;
-  width:100%;height:100%;
-  z-index:0;opacity:0.13;
-}
-
-.scan-line{
-  position:fixed;left:0;width:100%;height:2px;
-  background:rgba(0,255,65,0.25);
-  animation:scan 5s linear infinite;
-  z-index:5;pointer-events:none;
-}
+body{background:#000;color:#00ff41;font-family:'Share Tech Mono',monospace;min-height:100vh;overflow-x:hidden;}
+#matrix-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.13;}
+.scan-line{position:fixed;left:0;width:100%;height:2px;background:rgba(0,255,65,0.25);animation:scan 5s linear infinite;z-index:5;pointer-events:none;}
 @keyframes scan{0%{top:0;}100%{top:100%;}}
-
-.container{
-  position:relative;z-index:10;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  min-height:100vh;padding:2rem;
-  text-align:center;gap:.6rem;
-}
-
-/* GLITCH TITLE */
-.glitch{
-  font-family:'Orbitron',monospace;
-  font-size:clamp(1.8rem,6vw,3.5rem);
-  font-weight:900;color:#00ff41;
-  letter-spacing:.25em;
-  position:relative;
-  animation:glitch 4s infinite;
-}
-.glitch::before,.glitch::after{
-  content:attr(data-text);
-  position:absolute;top:0;left:0;width:100%;
-}
+.container{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem;text-align:center;gap:.6rem;}
+.glitch{font-family:'Orbitron',monospace;font-size:clamp(1.8rem,6vw,3.5rem);font-weight:900;color:#00ff41;letter-spacing:.25em;position:relative;animation:glitch 4s infinite;}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;}
 .glitch::before{color:#ff003c;clip-path:polygon(0 0,100% 0,100% 45%,0 45%);animation:gb 4s infinite;}
 .glitch::after{color:#00f0ff;clip-path:polygon(0 55%,100% 55%,100% 100%,0 100%);animation:ga 4s infinite;}
-@keyframes glitch{
-  0%,89%,100%{transform:translate(0);}
-  90%{transform:translate(-3px,1px);}
-  92%{transform:translate(3px,-1px);}
-  94%{transform:translate(-2px,0);}
-}
-@keyframes gb{
-  0%,89%,100%{transform:translate(0);}
-  90%{transform:translate(3px,0);}
-  92%{transform:translate(-3px,0);}
-}
-@keyframes ga{
-  0%,89%,100%{transform:translate(0);}
-  90%{transform:translate(-3px,0);}
-  92%{transform:translate(3px,0);}
-}
-
+@keyframes glitch{0%,89%,100%{transform:translate(0);}90%{transform:translate(-3px,1px);}92%{transform:translate(3px,-1px);}94%{transform:translate(-2px,0);}}
+@keyframes gb{0%,89%,100%{transform:translate(0);}90%{transform:translate(3px,0);}92%{transform:translate(-3px,0);}}
+@keyframes ga{0%,89%,100%{transform:translate(0);}90%{transform:translate(-3px,0);}92%{transform:translate(3px,0);}}
 .skull{font-size:72px;animation:pulse 2s ease-in-out infinite;display:block;}
 @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
-
-.badge{
-  display:inline-block;
-  border:1px solid rgba(255,189,46,.5);
-  background:rgba(255,189,46,.07);
-  color:#ffbd2e;font-size:.72rem;
-  padding:5px 16px;letter-spacing:.2em;
-  margin-bottom:.5rem;
-}
-
-.sub{
-  color:#555;font-size:.8rem;
-  letter-spacing:.3em;text-transform:uppercase;
-}
-
-/* TERMINAL */
-.terminal{
-  background:#050505;
-  border:1px solid #00ff41;
-  border-radius:4px;
-  padding:1.4rem 1.6rem;
-  max-width:580px;width:100%;
-  text-align:left;
-  box-shadow:0 0 40px rgba(0,255,65,.08);
-  margin:.6rem 0;
-}
-.t-header{
-  display:flex;align-items:center;gap:7px;
-  margin-bottom:.9rem;padding-bottom:.6rem;
-  border-bottom:1px solid #111;
-}
+.badge{display:inline-block;border:1px solid rgba(255,189,46,.5);background:rgba(255,189,46,.07);color:#ffbd2e;font-size:.72rem;padding:5px 16px;letter-spacing:.2em;margin-bottom:.5rem;}
+.sub{color:#555;font-size:.8rem;letter-spacing:.3em;text-transform:uppercase;}
+.terminal{background:#050505;border:1px solid #00ff41;border-radius:4px;padding:1.4rem 1.6rem;max-width:580px;width:100%;text-align:left;box-shadow:0 0 40px rgba(0,255,65,.08);margin:.6rem 0;}
+.t-header{display:flex;align-items:center;gap:7px;margin-bottom:.9rem;padding-bottom:.6rem;border-bottom:1px solid #111;}
 .dot{width:11px;height:11px;border-radius:50%;}
 .t-title{color:#444;font-size:.73rem;margin-left:auto;}
 .ln{margin:.28rem 0;font-size:.81rem;}
-.ln .p{color:#00ff41;}
-.ln .c{color:#fff;}
-.ln .o{color:#555;}
-.ln .s{color:#27c93f;}
-.ln .w{color:#ffbd2e;}
-.cur{
-  display:inline-block;width:8px;height:13px;
-  background:#00ff41;animation:blink 1s infinite;
-  vertical-align:middle;margin-left:2px;
-}
+.ln .p{color:#00ff41;}.ln .c{color:#fff;}.ln .o{color:#555;}.ln .s{color:#27c93f;}.ln .w{color:#ffbd2e;}
+.cur{display:inline-block;width:8px;height:13px;background:#00ff41;animation:blink 1s infinite;vertical-align:middle;margin-left:2px;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
-
-/* STATS */
-.stats{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:10px;max-width:580px;width:100%;
-}
-.stat{
-  background:#050505;
-  border:1px solid #0d2e0d;
-  padding:.9rem .5rem;text-align:center;
-  border-radius:2px;
-}
-.stat .v{
-  font-family:'Orbitron',monospace;
-  font-size:1.35rem;font-weight:700;color:#00ff41;
-}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:580px;width:100%;}
+.stat{background:#050505;border:1px solid #0d2e0d;padding:.9rem .5rem;text-align:center;border-radius:2px;}
+.stat .v{font-family:'Orbitron',monospace;font-size:1.35rem;font-weight:700;color:#00ff41;}
 .stat .l{font-size:.62rem;color:#444;letter-spacing:.15em;margin-top:4px;}
-
-/* DISCORD BUTTON */
-.dbtn{
-  display:inline-flex;align-items:center;gap:12px;
-  border:1px solid #00ff41;color:#00ff41;
-  font-family:'Share Tech Mono',monospace;font-size:.9rem;
-  padding:.9rem 2.2rem;text-decoration:none;
-  letter-spacing:.2em;position:relative;overflow:hidden;
-  transition:color .3s,box-shadow .3s;margin:.6rem 0;
-}
-.dbtn::before{
-  content:'';position:absolute;top:0;left:-100%;
-  width:100%;height:100%;
-  background:rgba(0,255,65,.08);transition:left .3s;
-}
+.dbtn{display:inline-flex;align-items:center;gap:12px;border:1px solid #00ff41;color:#00ff41;font-family:'Share Tech Mono',monospace;font-size:.9rem;padding:.9rem 2.2rem;text-decoration:none;letter-spacing:.2em;position:relative;overflow:hidden;transition:color .3s,box-shadow .3s;margin:.6rem 0;}
+.dbtn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:rgba(0,255,65,.08);transition:left .3s;}
 .dbtn:hover::before{left:0;}
 .dbtn:hover{box-shadow:0 0 25px rgba(0,255,65,.3);color:#fff;}
 .dbtn svg{width:20px;height:20px;fill:currentColor;}
-
 .footer-txt{color:#222;font-size:.68rem;letter-spacing:.1em;margin-top:.4rem;}
 .ip-txt{color:#444;font-size:.73rem;}
-
-/* FADE IN */
 @keyframes fu{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
-.a1{animation:fu .5s ease .1s both;}
-.a2{animation:fu .5s ease .25s both;}
-.a3{animation:fu .5s ease .4s both;}
-.a4{animation:fu .5s ease .55s both;}
-.a5{animation:fu .5s ease .7s both;}
-.a6{animation:fu .5s ease .85s both;}
-
-/* ── MUSIC BAR ── */
-#mbar{
-  position:fixed;bottom:1.3rem;left:50%;
-  transform:translateX(-50%);
-  z-index:9000;
-  background:rgba(10,0,0,.95);
-  border:1px solid #ff0000;
-  border-radius:50px;
-  padding:.5rem 1.3rem;
-  display:flex;align-items:center;gap:.8rem;
-  backdrop-filter:blur(12px);
-  box-shadow:0 0 20px rgba(255,0,0,.15);
-  white-space:nowrap;
-}
-.micon{
-  width:29px;height:29px;background:#ff0000;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.micon svg{width:12px;height:12px;fill:#fff;}
-.mtit{font-size:.8rem;color:#aa5555;}
-.mtit b{color:#fff;}
-@keyframes eq{0%,100%{height:4px;}50%{height:17px;}}
-.eqw{display:flex;align-items:flex-end;gap:2px;height:19px;}
-.eqb{width:3px;background:#ff0000;border-radius:2px;animation:eq .75s ease infinite;}
-.eqb:nth-child(2){animation-delay:.14s;}
-.eqb:nth-child(3){animation-delay:.28s;}
-.eqb:nth-child(4){animation-delay:.07s;}
-.eqw.off .eqb{animation-play-state:paused;height:4px;}
-#mtbtn{
-  background:transparent;border:1px solid rgba(255,0,0,.35);
-  color:#ff0000;padding:4px 13px;border-radius:20px;
-  font-family:'Share Tech Mono',monospace;font-size:.76rem;
-  font-weight:700;transition:all .2s;cursor:pointer;
-}
-#mtbtn:hover{background:#ff0000;color:#fff;}
-#vol{accent-color:#ff0000;width:65px;}
+.a1{animation:fu .5s ease .1s both;}.a2{animation:fu .5s ease .25s both;}.a3{animation:fu .5s ease .4s both;}
+.a4{animation:fu .5s ease .55s both;}.a5{animation:fu .5s ease .7s both;}.a6{animation:fu .5s ease .85s both;}
 </style>
 </head>
 <body>
@@ -249,28 +93,10 @@ body{
   <p class="footer-txt">hacked by ak47 — discord.gg/ds47</p>
 </div>
 
-<!-- MUSIC BAR -->
-<div id="mbar">
-  <div class="micon">
-    <svg id="iplay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-    <svg id="ipause" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-  </div>
-  <div class="eqw off" id="eq">
-    <div class="eqb"></div><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div>
-  </div>
-  <div class="mtit"><b>Team AK47</b> — الموسيقى</div>
-  <input type="range" id="vol" min="0" max="100" value="70">
-  <button id="mtbtn">تشغيل</button>
-</div>
-
-<!-- ✅ الإصلاح: رابط كامل بدل مسار نسبي -->
-<audio id="aud" loop preload="auto">
-  <source src="https://ak47-team.github.io/hacked/music.mp3" type="audio/mpeg">
-  <source src="music.mp3" type="audio/mpeg">
-</audio>
+<!-- الصوت مخفي بالكامل -->
+<audio id="aud" loop preload="auto"></audio>
 
 <script>
-// Matrix
 const cv=document.getElementById('matrix-bg'),cx=cv.getContext('2d');
 cv.width=innerWidth;cv.height=innerHeight;
 const cols=Math.floor(cv.width/20),drops=Array(cols).fill(1);
@@ -287,7 +113,6 @@ function drawM(){
 setInterval(drawM,50);
 addEventListener('resize',()=>{cv.width=innerWidth;cv.height=innerHeight;});
 
-// Counter
 function count(el,t,d){
   let s=0,st=Math.ceil(t/(d/50));
   const iv=setInterval(()=>{
@@ -300,52 +125,13 @@ setTimeout(()=>{
   count(document.getElementById('online'),42,1200);
 },800);
 
-// ✅ MUSIC — مُصلح بالكامل
+// صوت تلقائي مخفي — يشتغل بأول تفاعل بدون أي أزرار
 const aud=document.getElementById('aud');
-const mtbtn=document.getElementById('mtbtn');
-const eq=document.getElementById('eq');
-const iplay=document.getElementById('iplay');
-const ipause=document.getElementById('ipause');
-const volSlider=document.getElementById('vol');
-let playing=false;
-
 aud.volume=0.7;
+aud.src=location.href.replace(/\/[^\/]*$/,'/')+'music.mp3';
 
-// ✅ تحديد المسار الصحيح تلقائياً
-const base=location.href.replace(/\/[^\/]*$/,'/');
-aud.src=base+'music.mp3';
-
-function setVol(v){aud.volume=v/100;}
-
-function toggleM(){
-  if(playing){
-    aud.pause();
-    mtbtn.textContent='تشغيل';
-    eq.classList.add('off');
-    iplay.style.display='block';
-    ipause.style.display='none';
-    playing=false;
-  } else {
-    aud.load(); // ✅ إعادة تحميل قبل التشغيل
-    aud.play().then(()=>{
-      mtbtn.textContent='إيقاف';
-      eq.classList.remove('off');
-      iplay.style.display='none';
-      ipause.style.display='block';
-      playing=true;
-    }).catch(e=>{
-      console.warn('Audio error:',e);
-      mtbtn.textContent='! خطأ في الصوت';
-    });
-  }
-}
-
-mtbtn.onclick=toggleM;
-volSlider.oninput=function(){setVol(this.value);};
-
-// تشغيل عند أول تفاعل
 function startOnce(){
-  if(!playing)toggleM();
+  aud.play().catch(()=>{});
   document.removeEventListener('click',startOnce);
   document.removeEventListener('keydown',startOnce);
   document.removeEventListener('touchstart',startOnce);
