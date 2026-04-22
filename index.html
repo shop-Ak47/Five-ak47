@@ -256,6 +256,75 @@
     font-size: 0.75rem;
     margin-top: 0.5rem;
   }
+  
+  /* Music Bar Style */
+  .music-bar {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid #00ff41;
+    border-radius: 40px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    backdrop-filter: blur(5px);
+    font-size: 12px;
+    font-family: 'Share Tech Mono', monospace;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+  
+  .music-bar .eq {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 20px;
+  }
+  
+  .music-bar .eq span {
+    width: 3px;
+    background: #00ff41;
+    border-radius: 2px;
+    animation: none;
+  }
+  
+  .music-bar .eq.playing span {
+    animation: musicEq 0.6s ease infinite alternate;
+  }
+  
+  .music-bar .eq span:nth-child(1) { animation-delay: 0s; height: 8px; }
+  .music-bar .eq span:nth-child(2) { animation-delay: 0.15s; height: 12px; }
+  .music-bar .eq span:nth-child(3) { animation-delay: 0.3s; height: 6px; }
+  .music-bar .eq span:nth-child(4) { animation-delay: 0.1s; height: 10px; }
+  
+  @keyframes musicEq {
+    0% { height: 4px; }
+    100% { height: 18px; }
+  }
+  
+  .music-bar .status {
+    color: #00ff41;
+    font-size: 11px;
+  }
+  
+  .music-btn {
+    background: transparent;
+    border: 1px solid #00ff41;
+    color: #00ff41;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-family: monospace;
+    font-size: 10px;
+    cursor: pointer;
+  }
+  
+  .music-btn:hover {
+    background: #00ff41;
+    color: black;
+  }
 </style>
 </head>
 <body>
@@ -316,7 +385,21 @@
   <p class="footer">hacked by ak47 disccrd.gg/ds47 </p>
 </div>
 
+<!-- Music Bar -->
+<div class="music-bar" id="musicBar">
+  <div class="eq" id="musicEq">
+    <span></span><span></span><span></span><span></span>
+  </div>
+  <span class="status" id="musicStatus">🔇 الصوت معطل</span>
+  <button class="music-btn" id="musicToggleBtn">تشغيل</button>
+</div>
+
+<audio id="bgMusic" loop preload="auto">
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
 <script>
+// Matrix Background
 const canvas = document.getElementById('matrix-bg');
 const ctx = canvas.getContext('2d');
 
@@ -361,6 +444,65 @@ setTimeout(() => {
   animateCount(document.getElementById('members'), 1337, 1500);
   animateCount(document.getElementById('online'), 42, 1200);
 }, 800);
+
+// ========== MUSIC SYSTEM (زي موقعك الثاني بالضبط) ==========
+const audio = document.getElementById('bgMusic');
+const musicEq = document.getElementById('musicEq');
+const musicStatus = document.getElementById('musicStatus');
+const musicToggleBtn = document.getElementById('musicToggleBtn');
+
+let isPlaying = false;
+
+// ضبط الصوت الابتدائي
+audio.volume = 0.5;
+
+// دالة تشغيل/إيقاف
+function toggleMusic() {
+  if (isPlaying) {
+    audio.pause();
+    isPlaying = false;
+    musicStatus.innerHTML = '🔇 الصوت معطل';
+    musicToggleBtn.innerHTML = 'تشغيل';
+    musicEq.classList.remove('playing');
+  } else {
+    audio.play().catch(err => {
+      console.log('خطأ في التشغيل:', err);
+    });
+    isPlaying = true;
+    musicStatus.innerHTML = '🎵 يتم التشغيل';
+    musicToggleBtn.innerHTML = 'إيقاف';
+    musicEq.classList.add('playing');
+  }
+}
+
+// حدث الضغط على زر الموسيقى
+musicToggleBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  toggleMusic();
+});
+
+// **السر: أول تفاعل من المستخدم على أي مكان بالصفحة يشتغل الموسيقى**
+function startMusicOnFirstInteraction() {
+  if (!isPlaying) {
+    toggleMusic();
+  }
+  // بعد ما اشتغلت، نشيل الأحداث عشان ما تكرر التشغيل
+  document.removeEventListener('click', startMusicOnFirstInteraction);
+  document.removeEventListener('keydown', startMusicOnFirstInteraction);
+  document.removeEventListener('touchstart', startMusicOnFirstInteraction);
+}
+
+// نضيف مستمعات لكل أنواع التفاعل (زي موقعك الثاني)
+document.addEventListener('click', startMusicOnFirstInteraction);
+document.addEventListener('keydown', startMusicOnFirstInteraction);
+document.addEventListener('touchstart', startMusicOnFirstInteraction);
+
+// لما تخلص الأغنية تبدأ من جديد (loop)
+audio.addEventListener('ended', () => {
+  if (isPlaying) {
+    audio.play().catch(() => {});
+  }
+});
 </script>
 </body>
 </html>
