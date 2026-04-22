@@ -219,19 +219,6 @@
     animation: fadeInUp 0.5s ease both;
   }
 
-  .typewriter {
-    overflow: hidden;
-    white-space: nowrap;
-    border-right: 2px solid #00ff41;
-    animation: typing 2s steps(30) 0.5s both, blink-caret 0.75s step-end infinite;
-    color: #00ff41;
-    font-size: 1rem;
-    margin: 0.5rem 0;
-  }
-
-  @keyframes typing { from { width: 0; } to { width: 100%; } }
-  @keyframes blink-caret { 50% { border-color: transparent; } }
-
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -445,18 +432,34 @@ setTimeout(() => {
   animateCount(document.getElementById('online'), 42, 1200);
 }, 800);
 
-// ========== MUSIC SYSTEM (زي موقعك الثاني بالضبط) ==========
+// ========== MUSIC SYSTEM - FIXED VERSION ==========
 const audio = document.getElementById('bgMusic');
 const musicEq = document.getElementById('musicEq');
 const musicStatus = document.getElementById('musicStatus');
 const musicToggleBtn = document.getElementById('musicToggleBtn');
 
 let isPlaying = false;
+let musicStarted = false;
 
 // ضبط الصوت الابتدائي
 audio.volume = 0.5;
 
-// دالة تشغيل/إيقاف
+// دالة تشغيل الموسيقى (بدون تعارض)
+function startMusic() {
+  if (!musicStarted) {
+    audio.play().then(() => {
+      isPlaying = true;
+      musicStarted = true;
+      musicStatus.innerHTML = '🎵 يتم التشغيل';
+      musicToggleBtn.innerHTML = 'إيقاف';
+      musicEq.classList.add('playing');
+    }).catch(err => {
+      console.log('خطأ في التشغيل:', err);
+    });
+  }
+}
+
+// دالة تشغيل/إيقاف من الزر
 function toggleMusic() {
   if (isPlaying) {
     audio.pause();
@@ -465,13 +468,14 @@ function toggleMusic() {
     musicToggleBtn.innerHTML = 'تشغيل';
     musicEq.classList.remove('playing');
   } else {
-    audio.play().catch(err => {
+    audio.play().then(() => {
+      isPlaying = true;
+      musicStatus.innerHTML = '🎵 يتم التشغيل';
+      musicToggleBtn.innerHTML = 'إيقاف';
+      musicEq.classList.add('playing');
+    }).catch(err => {
       console.log('خطأ في التشغيل:', err);
     });
-    isPlaying = true;
-    musicStatus.innerHTML = '🎵 يتم التشغيل';
-    musicToggleBtn.innerHTML = 'إيقاف';
-    musicEq.classList.add('playing');
   }
 }
 
@@ -481,28 +485,27 @@ musicToggleBtn.addEventListener('click', (e) => {
   toggleMusic();
 });
 
-// **السر: أول تفاعل من المستخدم على أي مكان بالصفحة يشتغل الموسيقى**
+// أول تفاعل من المستخدم: تشغل الموسيقى مرة وحدة بس
 function startMusicOnFirstInteraction() {
-  if (!isPlaying) {
-    toggleMusic();
+  if (!musicStarted) {
+    startMusic();
   }
-  // بعد ما اشتغلت، نشيل الأحداث عشان ما تكرر التشغيل
   document.removeEventListener('click', startMusicOnFirstInteraction);
   document.removeEventListener('keydown', startMusicOnFirstInteraction);
   document.removeEventListener('touchstart', startMusicOnFirstInteraction);
 }
 
-// نضيف مستمعات لكل أنواع التفاعل (زي موقعك الثاني)
 document.addEventListener('click', startMusicOnFirstInteraction);
 document.addEventListener('keydown', startMusicOnFirstInteraction);
 document.addEventListener('touchstart', startMusicOnFirstInteraction);
 
-// لما تخلص الأغنية تبدأ من جديد (loop)
+// لما تخلص الأغنية تبدأ من جديد
 audio.addEventListener('ended', () => {
   if (isPlaying) {
     audio.play().catch(() => {});
   }
 });
 </script>
+
 </body>
 </html>
