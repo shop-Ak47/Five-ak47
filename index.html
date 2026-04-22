@@ -2,341 +2,206 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AK47 - Hacked</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+*{margin:0;padding:0;box-sizing:border-box;}
 
-  body {
-    background: #0a0a0a;
-    color: #00ff41;
-    font-family: 'Share Tech Mono', monospace;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+body{
+  background:#000;
+  color:#00ff41;
+  font-family:'Share Tech Mono',monospace;
+  min-height:100vh;
+  overflow-x:hidden;
+}
 
-  #matrix-bg {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 0;
-    opacity: 0.15;
-  }
+#matrix-bg{
+  position:fixed;top:0;left:0;
+  width:100%;height:100%;
+  z-index:0;opacity:0.13;
+}
 
-  .container {
-    position: relative;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 2rem;
-    text-align: center;
-  }
+.scan-line{
+  position:fixed;left:0;width:100%;height:2px;
+  background:rgba(0,255,65,0.25);
+  animation:scan 5s linear infinite;
+  z-index:5;pointer-events:none;
+}
+@keyframes scan{0%{top:0;}100%{top:100%;}}
 
-  .skull {
-    font-size: 80px;
-    animation: pulse 2s infinite;
-    filter: drop-shadow(0 0 20px #00ff41);
-  }
+.container{
+  position:relative;z-index:10;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  min-height:100vh;padding:2rem;
+  text-align:center;gap:.6rem;
+}
 
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.1); opacity: 0.7; }
-  }
+/* GLITCH TITLE */
+.glitch{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(1.8rem,6vw,3.5rem);
+  font-weight:900;color:#00ff41;
+  letter-spacing:.25em;
+  position:relative;
+  animation:glitch 4s infinite;
+}
+.glitch::before,.glitch::after{
+  content:attr(data-text);
+  position:absolute;top:0;left:0;width:100%;
+}
+.glitch::before{color:#ff003c;clip-path:polygon(0 0,100% 0,100% 45%,0 45%);animation:gb 4s infinite;}
+.glitch::after{color:#00f0ff;clip-path:polygon(0 55%,100% 55%,100% 100%,0 100%);animation:ga 4s infinite;}
+@keyframes glitch{
+  0%,89%,100%{transform:translate(0);}
+  90%{transform:translate(-3px,1px);}
+  92%{transform:translate(3px,-1px);}
+  94%{transform:translate(-2px,0);}
+}
+@keyframes gb{
+  0%,89%,100%{transform:translate(0);}
+  90%{transform:translate(3px,0);}
+  92%{transform:translate(-3px,0);}
+}
+@keyframes ga{
+  0%,89%,100%{transform:translate(0);}
+  90%{transform:translate(-3px,0);}
+  92%{transform:translate(3px,0);}
+}
 
-  .glitch {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(1.5rem, 5vw, 3rem);
-    font-weight: 900;
-    color: #00ff41;
-    text-shadow: 2px 0 #ff0000, -2px 0 #0000ff;
-    animation: glitch 3s infinite;
-    margin: 1rem 0;
-    letter-spacing: 0.2em;
-  }
+.skull{font-size:72px;animation:pulse 2s ease-in-out infinite;display:block;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
 
-  @keyframes glitch {
-    0%, 90%, 100% { text-shadow: 2px 0 #ff0000, -2px 0 #0000ff; transform: translate(0); }
-    91% { text-shadow: -2px 0 #ff0000, 2px 0 #0000ff; transform: translate(-2px, 1px); }
-    93% { text-shadow: 4px 0 #ff0000, -4px 0 #0000ff; transform: translate(2px, -1px); }
-    95% { text-shadow: 2px 0 #ff0000, -2px 0 #0000ff; transform: translate(0); }
-  }
+.badge{
+  display:inline-block;
+  border:1px solid rgba(255,189,46,.5);
+  background:rgba(255,189,46,.07);
+  color:#ffbd2e;font-size:.72rem;
+  padding:5px 16px;letter-spacing:.2em;
+  margin-bottom:.5rem;
+}
 
-  .subtitle {
-    color: #888;
-    font-size: 0.85rem;
-    letter-spacing: 0.3em;
-    margin-bottom: 2rem;
-    text-transform: uppercase;
-  }
+.sub{
+  color:#555;font-size:.8rem;
+  letter-spacing:.3em;text-transform:uppercase;
+}
 
-  .terminal-box {
-    background: #0d0d0d;
-    border: 1px solid #00ff41;
-    border-radius: 4px;
-    padding: 1.5rem;
-    max-width: 600px;
-    width: 100%;
-    margin: 1.5rem 0;
-    text-align: left;
-    box-shadow: 0 0 30px rgba(0,255,65,0.15), inset 0 0 20px rgba(0,255,65,0.03);
-    position: relative;
-  }
+/* TERMINAL */
+.terminal{
+  background:#050505;
+  border:1px solid #00ff41;
+  border-radius:4px;
+  padding:1.4rem 1.6rem;
+  max-width:580px;width:100%;
+  text-align:left;
+  box-shadow:0 0 40px rgba(0,255,65,.08);
+  margin:.6rem 0;
+}
+.t-header{
+  display:flex;align-items:center;gap:7px;
+  margin-bottom:.9rem;padding-bottom:.6rem;
+  border-bottom:1px solid #111;
+}
+.dot{width:11px;height:11px;border-radius:50%;}
+.t-title{color:#444;font-size:.73rem;margin-left:auto;}
+.ln{margin:.28rem 0;font-size:.81rem;}
+.ln .p{color:#00ff41;}
+.ln .c{color:#fff;}
+.ln .o{color:#555;}
+.ln .s{color:#27c93f;}
+.ln .w{color:#ffbd2e;}
+.cur{
+  display:inline-block;width:8px;height:13px;
+  background:#00ff41;animation:blink 1s infinite;
+  vertical-align:middle;margin-left:2px;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
 
-  .terminal-header {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #1a1a1a;
-  }
+/* STATS */
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:10px;max-width:580px;width:100%;
+}
+.stat{
+  background:#050505;
+  border:1px solid #0d2e0d;
+  padding:.9rem .5rem;text-align:center;
+  border-radius:2px;
+}
+.stat .v{
+  font-family:'Orbitron',monospace;
+  font-size:1.35rem;font-weight:700;color:#00ff41;
+}
+.stat .l{font-size:.62rem;color:#444;letter-spacing:.15em;margin-top:4px;}
 
-  .dot { width: 10px; height: 10px; border-radius: 50%; }
-  .dot.r { background: #ff5f56; }
-  .dot.y { background: #ffbd2e; }
-  .dot.g { background: #27c93f; }
+/* DISCORD BUTTON */
+.dbtn{
+  display:inline-flex;align-items:center;gap:12px;
+  border:1px solid #00ff41;color:#00ff41;
+  font-family:'Share Tech Mono',monospace;font-size:.9rem;
+  padding:.9rem 2.2rem;text-decoration:none;
+  letter-spacing:.2em;position:relative;overflow:hidden;
+  transition:color .3s,box-shadow .3s;margin:.6rem 0;
+}
+.dbtn::before{
+  content:'';position:absolute;top:0;left:-100%;
+  width:100%;height:100%;
+  background:rgba(0,255,65,.08);transition:left .3s;
+}
+.dbtn:hover::before{left:0;}
+.dbtn:hover{box-shadow:0 0 25px rgba(0,255,65,.3);color:#fff;}
+.dbtn svg{width:20px;height:20px;fill:currentColor;}
 
-  .terminal-title { color: #555; font-size: 0.75rem; margin-left: auto; }
+.footer-txt{color:#222;font-size:.68rem;letter-spacing:.1em;margin-top:.4rem;}
+.ip-txt{color:#444;font-size:.73rem;}
 
-  .line { margin: 0.3rem 0; font-size: 0.82rem; }
-  .line .prompt { color: #00ff41; }
-  .line .cmd { color: #fff; }
-  .line .out { color: #888; }
-  .line .success { color: #27c93f; }
-  .line .warn { color: #ffbd2e; }
-  .line .red { color: #ff5f56; }
+/* FADE IN */
+@keyframes fu{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.a1{animation:fu .5s ease .1s both;}
+.a2{animation:fu .5s ease .25s both;}
+.a3{animation:fu .5s ease .4s both;}
+.a4{animation:fu .5s ease .55s both;}
+.a5{animation:fu .5s ease .7s both;}
+.a6{animation:fu .5s ease .85s both;}
 
-  .cursor {
-    display: inline-block;
-    width: 8px; height: 14px;
-    background: #00ff41;
-    animation: blink 1s infinite;
-    vertical-align: middle;
-    margin-left: 2px;
-  }
-
-  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    width: 100%;
-    max-width: 600px;
-    margin: 1rem 0;
-  }
-
-  .stat-card {
-    background: #0d0d0d;
-    border: 1px solid #1a3a1a;
-    padding: 0.8rem;
-    text-align: center;
-    border-radius: 2px;
-  }
-
-  .stat-card .val {
-    font-family: 'Orbitron', monospace;
-    font-size: 1.4rem;
-    color: #00ff41;
-    font-weight: 700;
-  }
-
-  .stat-card .lbl {
-    font-size: 0.65rem;
-    color: #555;
-    letter-spacing: 0.15em;
-    margin-top: 4px;
-  }
-
-  .discord-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    background: transparent;
-    border: 1px solid #00ff41;
-    color: #00ff41;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.9rem;
-    padding: 1rem 2rem;
-    cursor: pointer;
-    letter-spacing: 0.2em;
-    text-decoration: none;
-    margin: 1.5rem 0;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .discord-btn::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%;
-    width: 100%; height: 100%;
-    background: rgba(0,255,65,0.1);
-    transition: left 0.3s;
-  }
-
-  .discord-btn:hover::before { left: 0; }
-  .discord-btn:hover {
-    box-shadow: 0 0 20px rgba(0,255,65,0.4);
-    color: #fff;
-  }
-
-  .discord-icon {
-    width: 20px; height: 20px;
-    fill: currentColor;
-  }
-
-  .scan-line {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 2px;
-    background: rgba(0,255,65,0.3);
-    animation: scan 4s linear infinite;
-    z-index: 5;
-    pointer-events: none;
-  }
-
-  @keyframes scan {
-    0% { top: 0; }
-    100% { top: 100%; }
-  }
-
-  .warning-badge {
-    display: inline-block;
-    background: rgba(255,189,46,0.1);
-    border: 1px solid #ffbd2e55;
-    color: #ffbd2e;
-    font-size: 0.7rem;
-    padding: 4px 12px;
-    letter-spacing: 0.15em;
-    margin-bottom: 1rem;
-    animation: fadeInUp 0.5s ease both;
-  }
-
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .anim-1 { animation: fadeInUp 0.5s ease 0.2s both; }
-  .anim-2 { animation: fadeInUp 0.5s ease 0.4s both; }
-  .anim-3 { animation: fadeInUp 0.5s ease 0.6s both; }
-  .anim-4 { animation: fadeInUp 0.5s ease 0.8s both; }
-  .anim-5 { animation: fadeInUp 0.5s ease 1.0s both; }
-  .anim-6 { animation: fadeInUp 0.5s ease 1.2s both; }
-
-  .footer {
-    color: #333;
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    margin-top: 2rem;
-  }
-
-  .ip-line {
-    color: #555;
-    font-size: 0.75rem;
-    margin-top: 0.5rem;
-  }
-
-  /* Music Bar Style */
-  #mbar {
-    position: fixed;
-    bottom: 1.4rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 8000;
-    background: rgba(18, 0, 0, 0.93);
-    border: 1px solid #ff0000;
-    border-radius: 50px;
-    padding: .55rem 1.4rem;
-    display: flex;
-    align-items: center;
-    gap: .9rem;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 24px rgba(255, 0, 0, 0.2);
-    white-space: nowrap;
-  }
-
-  .micon {
-    width: 30px;
-    height: 30px;
-    background: #ff0000;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-  }
-
-  .micon svg {
-    width: 13px;
-    height: 13px;
-    fill: white;
-  }
-
-  .mtitle {
-    font-size: .82rem;
-    color: #cc7777;
-  }
-
-  .mtitle b {
-    color: white;
-  }
-
-  @keyframes eq {
-    0%, 100% { height: 5px; }
-    50% { height: 18px; }
-  }
-
-  .eqw {
-    display: flex;
-    align-items: flex-end;
-    gap: 2px;
-    height: 20px;
-  }
-
-  .eqb {
-    width: 3px;
-    background: #ff0000;
-    border-radius: 2px;
-    animation: eq .8s ease infinite;
-  }
-
-  .eqb:nth-child(2) { animation-delay: .15s; }
-  .eqb:nth-child(3) { animation-delay: .3s; }
-  .eqb:nth-child(4) { animation-delay: .08s; }
-
-  .eqw.off .eqb {
-    animation-play-state: paused;
-    height: 4px;
-  }
-
-  #mtbtn {
-    background: transparent;
-    border: 1px solid rgba(255, 0, 0, 0.3);
-    color: #ff0000;
-    padding: 4px 14px;
-    border-radius: 20px;
-    font-family: 'Tajawal', sans-serif;
-    font-size: .78rem;
-    font-weight: 700;
-    transition: all .2s;
-    cursor: pointer;
-  }
-
-  #mtbtn:hover {
-    background: #ff0000;
-    color: white;
-  }
-
-  #vol {
-    accent-color: #ff0000;
-  }
+/* ── MUSIC BAR ── */
+#mbar{
+  position:fixed;bottom:1.3rem;left:50%;
+  transform:translateX(-50%);
+  z-index:9000;
+  background:rgba(10,0,0,.95);
+  border:1px solid #ff0000;
+  border-radius:50px;
+  padding:.5rem 1.3rem;
+  display:flex;align-items:center;gap:.8rem;
+  backdrop-filter:blur(12px);
+  box-shadow:0 0 20px rgba(255,0,0,.15);
+  white-space:nowrap;
+}
+.micon{
+  width:29px;height:29px;background:#ff0000;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.micon svg{width:12px;height:12px;fill:#fff;}
+.mtit{font-size:.8rem;color:#aa5555;}
+.mtit b{color:#fff;}
+@keyframes eq{0%,100%{height:4px;}50%{height:17px;}}
+.eqw{display:flex;align-items:flex-end;gap:2px;height:19px;}
+.eqb{width:3px;background:#ff0000;border-radius:2px;animation:eq .75s ease infinite;}
+.eqb:nth-child(2){animation-delay:.14s;}
+.eqb:nth-child(3){animation-delay:.28s;}
+.eqb:nth-child(4){animation-delay:.07s;}
+.eqw.off .eqb{animation-play-state:paused;height:4px;}
+#mtbtn{
+  background:transparent;border:1px solid rgba(255,0,0,.35);
+  color:#ff0000;padding:4px 13px;border-radius:20px;
+  font-family:'Share Tech Mono',monospace;font-size:.76rem;
+  font-weight:700;transition:all .2s;cursor:pointer;
+}
+#mtbtn:hover{background:#ff0000;color:#fff;}
+#vol{accent-color:#ff0000;width:65px;}
 </style>
 </head>
 <body>
@@ -345,46 +210,46 @@
 <div class="scan-line"></div>
 
 <div class="container">
-  <div class="warning-badge anim-1">⚠ Server IS hacked By ak47 ⚠</div>
-  <div class="skull anim-2">💀</div>
-  <h1 class="glitch anim-2">discord.gg/ds47</h1>
-  <p class="subtitle anim-3">[ لن نرحم ولا نسامح v3.1.4 ]</p>
+  <div class="badge a1">⚠ SERVER IS HACKED BY AK47 ⚠</div>
+  <span class="skull a2">💀</span>
+  <h1 class="glitch a2" data-text="discord.gg/ds47">discord.gg/ds47</h1>
+  <p class="sub a3">[ لن نرحم ولا نسامح — v3.1.4 ]</p>
 
-  <div class="terminal-box anim-4">
-    <div class="terminal-header">
-      <div class="dot r"></div>
-      <div class="dot y"></div>
-      <div class="dot g"></div>
-      <span class="terminal-title">root@darkserver:~</span>
+  <div class="terminal a4">
+    <div class="t-header">
+      <div class="dot" style="background:#ff5f56"></div>
+      <div class="dot" style="background:#ffbd2e"></div>
+      <div class="dot" style="background:#27c93f"></div>
+      <span class="t-title">root@darkserver:~</span>
     </div>
-    <div class="line"><span class="prompt">$ </span><span class="cmd">nmap --scan target.local</span></div>
-    <div class="line"><span class="out">Starting Nmap 7.94 ...</span></div>
-    <div class="line"><span class="success">✓ Host is up (0.0021s latency)</span></div>
-    <div class="line"><span class="out">PORT     STATE   SERVICE</span></div>
-    <div class="line"><span class="success">443/tcp  open    https</span></div>
-    <div class="line"><span class="success">8080/tcp open    discord-relay</span></div>
-    <div class="line"><span class="warn">⚡ Server detected: ACTIVE</span></div>
-    <div class="line"><span class="prompt">$ </span><span class="cmd">authenticate --user=member</span></div>
-    <div class="line"><span class="success">✓ ACCESS GRANTED — WELCOME BACK</span></div>
-    <div class="line"><span class="prompt">$ </span><span class="cursor"></span></div>
+    <div class="ln"><span class="p">$ </span><span class="c">nmap --scan target.local</span></div>
+    <div class="ln"><span class="o">Starting Nmap 7.94 ...</span></div>
+    <div class="ln"><span class="s">✓ Host is up (0.0021s latency)</span></div>
+    <div class="ln"><span class="o">PORT&nbsp;&nbsp;&nbsp;&nbsp; STATE&nbsp;&nbsp; SERVICE</span></div>
+    <div class="ln"><span class="s">443/tcp&nbsp; open&nbsp;&nbsp;&nbsp; https</span></div>
+    <div class="ln"><span class="s">8080/tcp open&nbsp;&nbsp;&nbsp; discord-relay</span></div>
+    <div class="ln"><span class="w">⚡ Server detected: ACTIVE</span></div>
+    <div class="ln"><span class="p">$ </span><span class="c">authenticate --user=member</span></div>
+    <div class="ln"><span class="s">✓ ACCESS GRANTED — WELCOME BACK</span></div>
+    <div class="ln"><span class="p">$ </span><span class="cur"></span></div>
   </div>
 
-  <div class="stats-grid anim-5">
-    <div class="stat-card"><div class="val" id="members">---</div><div class="lbl">MEMBERS</div></div>
-    <div class="stat-card"><div class="val" id="online">---</div><div class="lbl">ONLINE</div></div>
-    <div class="stat-card"><div class="val">99%</div><div class="lbl">UPTIME</div></div>
+  <div class="stats a5">
+    <div class="stat"><div class="v" id="members">---</div><div class="l">MEMBERS</div></div>
+    <div class="stat"><div class="v" id="online">---</div><div class="l">ONLINE</div></div>
+    <div class="stat"><div class="v">99%</div><div class="l">UPTIME</div></div>
   </div>
 
-  <a href="https://discord.gg/ds47" target="_blank" class="discord-btn anim-6">
-    <svg class="discord-icon" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.034.05a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-    [ ادخل سيرفرنا !  ]
+  <a href="https://discord.gg/ds47" target="_blank" class="dbtn a6">
+    <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.034.05a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+    [ ادخل سيرفرنا ! ]
   </a>
 
-  <p class="ip-line anim-6">discord.gg/ds47 — encrypted tunnel established</p>
-  <p class="footer">hacked by ak47 disccrd.gg/ds47</p>
+  <p class="ip-txt a6">discord.gg/ds47 — encrypted tunnel established</p>
+  <p class="footer-txt">hacked by ak47 — discord.gg/ds47</p>
 </div>
 
-<!-- Music Bar -->
+<!-- MUSIC BAR -->
 <div id="mbar">
   <div class="micon">
     <svg id="iplay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -393,110 +258,101 @@
   <div class="eqw off" id="eq">
     <div class="eqb"></div><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div>
   </div>
-  <div class="mtitle"><b>Team AK47</b> — الموسيقى</div>
-  <input type="range" id="vol" min="0" max="100" value="70" style="width:70px;accent-color:#ff0000;">
+  <div class="mtit"><b>Team AK47</b> — الموسيقى</div>
+  <input type="range" id="vol" min="0" max="100" value="70">
   <button id="mtbtn">تشغيل</button>
 </div>
 
-<audio id="aud" loop>
+<!-- ✅ الإصلاح: رابط كامل بدل مسار نسبي -->
+<audio id="aud" loop preload="auto">
+  <source src="https://ak47-team.github.io/hacked/music.mp3" type="audio/mpeg">
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-// Matrix Background
-const canvas = document.getElementById('matrix-bg');
-const ctx = canvas.getContext('2d');
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-const cols = Math.floor(canvas.width / 20);
-const drops = Array(cols).fill(1);
-const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEF';
-
-function drawMatrix() {
-  ctx.fillStyle = 'rgba(10,10,10,0.05)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = '#00ff41';
-  ctx.font = '14px monospace';
-  drops.forEach((y, i) => {
-    const char = chars[Math.floor(Math.random() * chars.length)];
-    ctx.fillText(char, i * 20, y * 20);
-    if (y * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+// Matrix
+const cv=document.getElementById('matrix-bg'),cx=cv.getContext('2d');
+cv.width=innerWidth;cv.height=innerHeight;
+const cols=Math.floor(cv.width/20),drops=Array(cols).fill(1);
+const chars='アイウエオカキクケコ0123456789ABCDEF';
+function drawM(){
+  cx.fillStyle='rgba(0,0,0,0.05)';cx.fillRect(0,0,cv.width,cv.height);
+  cx.fillStyle='#00ff41';cx.font='14px monospace';
+  drops.forEach((y,i)=>{
+    cx.fillText(chars[Math.floor(Math.random()*chars.length)],i*20,y*20);
+    if(y*20>cv.height&&Math.random()>.975)drops[i]=0;
     drops[i]++;
   });
 }
+setInterval(drawM,50);
+addEventListener('resize',()=>{cv.width=innerWidth;cv.height=innerHeight;});
 
-setInterval(drawMatrix, 50);
-
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
-
-function animateCount(el, target, duration) {
-  let start = 0;
-  const step = Math.ceil(target / (duration / 50));
-  const interval = setInterval(() => {
-    start += step;
-    if (start >= target) { el.textContent = target.toLocaleString(); clearInterval(interval); return; }
-    el.textContent = start.toLocaleString();
-  }, 50);
+// Counter
+function count(el,t,d){
+  let s=0,st=Math.ceil(t/(d/50));
+  const iv=setInterval(()=>{
+    s+=st;if(s>=t){el.textContent=t.toLocaleString();clearInterval(iv);return;}
+    el.textContent=s.toLocaleString();
+  },50);
 }
+setTimeout(()=>{
+  count(document.getElementById('members'),1337,1500);
+  count(document.getElementById('online'),42,1200);
+},800);
 
-setTimeout(() => {
-  animateCount(document.getElementById('members'), 1337, 1500);
-  animateCount(document.getElementById('online'), 42, 1200);
-}, 800);
+// ✅ MUSIC — مُصلح بالكامل
+const aud=document.getElementById('aud');
+const mtbtn=document.getElementById('mtbtn');
+const eq=document.getElementById('eq');
+const iplay=document.getElementById('iplay');
+const ipause=document.getElementById('ipause');
+const volSlider=document.getElementById('vol');
+let playing=false;
 
-// ========== MUSIC SYSTEM (نفس الموقع الثاني بالضبط) ==========
-const aud = document.getElementById('aud');
-const mtbtn = document.getElementById('mtbtn');
-const eq = document.getElementById('eq');
-const iplay = document.getElementById('iplay');
-const ipause = document.getElementById('ipause');
-const volSlider = document.getElementById('vol');
-let playing = false;
+aud.volume=0.7;
 
-aud.volume = 0.7;
+// ✅ تحديد المسار الصحيح تلقائياً
+const base=location.href.replace(/\/[^\/]*$/,'/');
+aud.src=base+'music.mp3';
 
-function setVol(v) { 
-  aud.volume = v / 100; 
-}
+function setVol(v){aud.volume=v/100;}
 
-function toggleM() {
-  if (playing) {
+function toggleM(){
+  if(playing){
     aud.pause();
-    mtbtn.textContent = 'تشغيل';
+    mtbtn.textContent='تشغيل';
     eq.classList.add('off');
-    iplay.style.display = 'block';
-    ipause.style.display = 'none';
-    playing = false;
+    iplay.style.display='block';
+    ipause.style.display='none';
+    playing=false;
   } else {
-    aud.play().catch(e => console.log('play error:', e));
-    mtbtn.textContent = 'إيقاف';
-    eq.classList.remove('off');
-    iplay.style.display = 'none';
-    ipause.style.display = 'block';
-    playing = true;
+    aud.load(); // ✅ إعادة تحميل قبل التشغيل
+    aud.play().then(()=>{
+      mtbtn.textContent='إيقاف';
+      eq.classList.remove('off');
+      iplay.style.display='none';
+      ipause.style.display='block';
+      playing=true;
+    }).catch(e=>{
+      console.warn('Audio error:',e);
+      mtbtn.textContent='! خطأ في الصوت';
+    });
   }
 }
 
-mtbtn.onclick = toggleM;
-volSlider.oninput = function() { setVol(this.value); };
+mtbtn.onclick=toggleM;
+volSlider.oninput=function(){setVol(this.value);};
 
-// أول تفاعل من المستخدم يشتغل الموسيقى
-function startOnInteraction() {
-  if (!playing) toggleM();
-  document.removeEventListener('click', startOnInteraction);
-  document.removeEventListener('keydown', startOnInteraction);
-  document.removeEventListener('touchstart', startOnInteraction);
+// تشغيل عند أول تفاعل
+function startOnce(){
+  if(!playing)toggleM();
+  document.removeEventListener('click',startOnce);
+  document.removeEventListener('keydown',startOnce);
+  document.removeEventListener('touchstart',startOnce);
 }
-
-document.addEventListener('click', startOnInteraction);
-document.addEventListener('keydown', startOnInteraction);
-document.addEventListener('touchstart', startOnInteraction);
+document.addEventListener('click',startOnce);
+document.addEventListener('keydown',startOnce);
+document.addEventListener('touchstart',startOnce);
 </script>
-
 </body>
 </html>
